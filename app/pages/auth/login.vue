@@ -11,7 +11,7 @@
       <div class="space-y-4">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <UButton color="neutral" variant="outline" icon="material-icon-theme:google" class="justify-center" :loading="false" :disabled="false">Google</UButton>
-          <UButton color="neutral" variant="outline" icon="qlementine-icons:github-16" class="justify-center" :loading="false" :disabled="false">Github</UButton>
+          <UButton @click="signIn.social({provider: 'github', callbackURL: '/'})" color="neutral" variant="outline" icon="qlementine-icons:github-16" class="justify-center" :loading="false" :disabled="false">Github</UButton>
         </div>
         <USeparator label="Or" />
         <UForm class="space-y-4" @submit="handleFormSignIn" :state="state" :schema="schema">
@@ -37,6 +37,7 @@
 <script lang="ts" setup>
 import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui';
+import { useAuth } from '~/composables/useAuth';
 
 const schema = z.object({
   email: z.email('Invalid email address'),
@@ -50,7 +51,21 @@ const state = reactive<Partial<Schema>>({
   password: undefined,
 })
 
-const handleFormSignIn = async (e: FormSubmitEvent<Schema>) => {}
+const {signIn} = useAuth()
+
+const handleFormSignIn = async (e: FormSubmitEvent<Schema>) => {
+  try {
+    const {error} = await signIn.email({
+      email: e.data.email,
+      password: e.data.password,
+      callbackURL: '/'
+    })
+
+    console.log(error)
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 </script>
 

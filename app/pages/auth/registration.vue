@@ -11,7 +11,7 @@
       <div class="space-y-4">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <UButton color="neutral" variant="outline" icon="material-icon-theme:google" class="justify-center" :loading="false" :disabled="false">Google</UButton>
-          <UButton color="neutral" variant="outline" icon="qlementine-icons:github-16" class="justify-center" :loading="false" :disabled="false">Github</UButton>
+          <UButton @click="signIn.social({provider: 'github', callbackURL: '/'})" color="neutral" variant="outline" icon="qlementine-icons:github-16" class="justify-center" :loading="false" :disabled="false">Github</UButton>
         </div>
         <USeparator label="Or" />
         <UForm class="space-y-4" @submit="handleFormSignUp" :state="state" :schema="schema">
@@ -44,6 +44,7 @@
 <script lang="ts" setup>
 import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui';
+import { useAuth } from '~/composables/useAuth';
 
 const schema = z.object({
   name: z.string('Invalid name').trim().min(5, 'You must have at least 5 characters'),
@@ -64,7 +65,22 @@ const state = reactive<Partial<Schema>>({
   confirmPassword: undefined
 })
 
-const handleFormSignUp = async (e: FormSubmitEvent<Schema>) => {}
+const {signUp, signIn} = useAuth()
+
+const handleFormSignUp = async (e: FormSubmitEvent<Schema>) => {
+  try {
+    const {error} = await signUp.email({
+      email: e.data.email,
+      password: e.data.password,
+      name: e.data.name,
+      callbackURL: '/'
+    })
+
+    console.log(error)
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 </script>
 
