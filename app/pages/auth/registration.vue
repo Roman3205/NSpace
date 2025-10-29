@@ -10,7 +10,7 @@
       </template>
       <div class="space-y-4">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <UButton color="neutral" variant="outline" icon="material-icon-theme:google" class="justify-center" :loading="false" :disabled="false">Google</UButton>
+          <UButton @click="signIn.social({provider: 'google', callbackURL: '/'})" color="neutral" variant="outline" icon="material-icon-theme:google" class="justify-center" :loading="false" :disabled="false">Google</UButton>
           <UButton @click="signIn.social({provider: 'github', callbackURL: '/'})" color="neutral" variant="outline" icon="qlementine-icons:github-16" class="justify-center" :loading="false" :disabled="false">Github</UButton>
         </div>
         <USeparator label="Or" />
@@ -34,7 +34,6 @@
           <UButton variant="link" color="primary" :disabled="false" to="/auth/login" class="-ml-2">
             Sign in
           </UButton>
-          <UColorModeSwitch />
         </div>
       </div>
     </UCard>
@@ -66,6 +65,7 @@ const state = reactive<Partial<Schema>>({
 })
 
 const {signUp, signIn} = useAuth()
+const toast = useToast()
 
 const handleFormSignUp = async (e: FormSubmitEvent<Schema>) => {
   try {
@@ -73,10 +73,13 @@ const handleFormSignUp = async (e: FormSubmitEvent<Schema>) => {
       email: e.data.email,
       password: e.data.password,
       name: e.data.name,
-      callbackURL: '/'
     })
 
-    console.log(error)
+    if (error) {
+      return toast.add({title: 'Error', description: error.message, color: 'error'})
+    }
+
+    return navigateTo('/')
   } catch (error) {
     console.log(error)
   }

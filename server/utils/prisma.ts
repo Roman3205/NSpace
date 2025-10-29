@@ -5,7 +5,8 @@ const {tursoDatabaseUrl, tursoAuthToken, public: {appEnv}} = useRuntimeConfig()
 
 const adapter = new PrismaLibSQL({
     url: tursoDatabaseUrl,
-    authToken: appEnv == 'development' ? undefined : tursoAuthToken
+    // authToken: appEnv == 'development' ? undefined : tursoAuthToken
+    authToken: tursoAuthToken
 })
 
-export const prisma = new PrismaClient({adapter: adapter})
+export const prisma = new PrismaClient({adapter})

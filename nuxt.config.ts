@@ -15,6 +15,11 @@ export default defineNuxtConfig({
   runtimeConfig: {
     tursoDatabaseUrl: '',
     tursoAuthToken: '',
+    googleClientId: '',
+    googleClientSecret: '',
+    githubClientId: '',
+    geminiApi: '',
+    githubClientSecret: '',
     public: {
       appEnv: ''
     }

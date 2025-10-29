@@ -10,7 +10,7 @@
       </template>
       <div class="space-y-4">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <UButton color="neutral" variant="outline" icon="material-icon-theme:google" class="justify-center" :loading="false" :disabled="false">Google</UButton>
+          <UButton @click="signIn.social({provider: 'google', callbackURL: '/'})" color="neutral" variant="outline" icon="material-icon-theme:google" class="justify-center" :loading="false" :disabled="false">Google</UButton>
           <UButton @click="signIn.social({provider: 'github', callbackURL: '/'})" color="neutral" variant="outline" icon="qlementine-icons:github-16" class="justify-center" :loading="false" :disabled="false">Github</UButton>
         </div>
         <USeparator label="Or" />
@@ -52,6 +52,7 @@ const state = reactive<Partial<Schema>>({
 })
 
 const {signIn} = useAuth()
+const toast = useToast()
 
 const handleFormSignIn = async (e: FormSubmitEvent<Schema>) => {
   try {
@@ -61,7 +62,10 @@ const handleFormSignIn = async (e: FormSubmitEvent<Schema>) => {
       callbackURL: '/'
     })
 
-    console.log(error)
+    if (error) {
+      toast.add({title: 'Error', description: error.message, color: 'error'})
+    }
+
   } catch (error) {
     console.log(error)
   }

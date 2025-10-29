@@ -1,12 +1,21 @@
 import { createAuthClient } from "better-auth/vue"
+import type { RouteLocationRaw } from 'vue-router';
 
 export function useAuth() {
     const authClient = createAuthClient({
         baseURL: "http://localhost:3007"
     })
 
+    const logout = async ({redirectTo}: {redirectTo?: RouteLocationRaw } = {}) => {
+        await authClient.signOut()
+        if(redirectTo) {
+            await navigateTo(redirectTo)
+        }
+    }
+
     return {
         signIn: authClient.signIn,
-        signUp: authClient.signUp
+        signUp: authClient.signUp,
+        signOut: logout
     }
 }
