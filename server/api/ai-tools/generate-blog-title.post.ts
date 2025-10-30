@@ -1,16 +1,16 @@
 import { openai } from "~~/server/utils/openai"
 
 export default defineEventHandler(async (event) => {
-    const {topic, category} = await readBody(event)
+    const {keyword, category} = await readBody(event)
 
-    if (!topic || !category) {
+    if (!keyword || !category) {
         throw createError({
             statusCode: 400,
             statusMessage: 'Data not provided'
         })
     }
 
-    const prompt = `Generate a blog title for the keyword ${topic} in the category ${category}`
+    const prompt = `Generate a blog title for the keyword ${keyword} in the category ${category}`
 
     const response = await openai.chat.completions.create({
         model: "gemini-2.5-flash",

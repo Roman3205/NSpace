@@ -2,8 +2,8 @@
   <div class="flex flex-col w-full h-full">
     <UPageHeader
     :ui="{root: 'border-none py-0 mb-4'}"
-        title="Conversation"
-        description="Engage in natural, intelligent conversations with AI for brainstorming, questions or casual chat."
+        title="Code Generation"
+        description="Generate code using description text."
     />
     <UCard variant="subtle" class="flex-1 overflow-y-auto space-y-4 px-4 py-2">
         <div class="flex flex-col gap-y-4">
@@ -11,8 +11,8 @@
                 <UButton size="sm" variant="soft" class="rounded-full" :icon="message.role == 'user' ? 'lucide:user' : 'lucide:bot'" :color="message.role == 'user' ? 'primary' : 'success'" />
                 <UCard :ui="{body: 'p-3'}">
                     <div class="text-sm max-w-prose">
-                        <MDC :value="message.content"></MDC>
-                         <!-- {{ message.content }} -->
+                        <!-- <MDC :value="message.content"></MDC> -->
+                         {{ message.content }}
                     </div>
                 </UCard>
             </div>
@@ -70,7 +70,7 @@ const sendPrompt = async (e: FormSubmitEvent<Schema>) => {
             content: e.data.prompt.trim()
         })
 
-        const data = await $fetch('/api/ai-tools/conversation', {
+        const data = await $fetch('/api/ai-tools/code', {
             method: 'POST',
             body: {
                 messages: messages.value
