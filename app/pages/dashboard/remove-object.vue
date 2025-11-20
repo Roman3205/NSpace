@@ -6,21 +6,21 @@
         description="Erase unwanted elements from your photos easily."
     />
     <div class="py-4 w-full max-w-full flex flex-col lg:flex-row gap-5">
-        <UCard class="w-full lg:w-2/5">
-            <UForm :schema="schema" :state="state" class="space-y-4 w-full" @submit="removeObject">
+        <UCard class="w-full lg:w-1/2 min-h-[460px]">
+            <UForm :schema="schema" :state="state" class="space-y-4 w-full flex flex-col" @submit="removeObject">
                 <UFormField name="object" label="Describe object to remove">
                     <UInput v-model="state.object" class="w-full" />
                 </UFormField>
                 <UFormField name="image" label="Image" description="JPG, GIF or PNG. 2MB Max.">
-                    <UFileUpload v-model="state.image" accept="image/*" class="min-h-48" />
+                    <UFileUpload v-model="state.image" accept="image/*" class="min-h-77" />
                 </UFormField>
 
-                <UButton type="submit" label="Submit" color="neutral" />
+                <UButton type="submit" label="Submit" class="w-fit" color="neutral" />
             </UForm>
         </UCard>
-        <UCard :ui="{body: 'p-3 h-full'}" class="flex-1 w-full lg:w-3/5">
-            <div class="h-full" v-if="backImageUrl">
-                <NuxtImg :src="backImageUrl" />
+        <UCard :ui="{body: 'p-3 h-full'}" class="flex-1 w-full lg:w-1/2 min-h-[460px]">
+            <div class="min-h-96 max-h-96" v-if="backImageUrl">
+                <NuxtImg :src="backImageUrl" class="w-full h-full"/>
             </div>
             <div v-else-if="isLoading && !backImageUrl" class="flex flex-col justify-center items-center">Removing image object...</div>
         </UCard>
@@ -97,6 +97,10 @@ const isLoading = ref(false)
 const toast = useToast()
 const backImageUrl = ref("")
 
+watch(() => state.image, (v) => {
+  if (!v) backImageUrl.value = ''
+})
+
 const removeObject = async (e: FormSubmitEvent<Schema>) => {
     try {
         if (isLoading.value === true) {
@@ -104,10 +108,15 @@ const removeObject = async (e: FormSubmitEvent<Schema>) => {
         }
         isLoading.value = true
 
-        const data = await $fetch('/api/ai-tools', {
+        const formData = new FormData()
+        if (e.data.image instanceof File) {
+          formData.append('image', e.data.image)
+        }
+
+        formData.append('object', e.data.object)
+        const data = await $fetch('/api/cloudinary/remove-object', {
             method: 'POST',
-            body: {
-            }
+            body: formData
         })
 
         if (data) {

@@ -3,6 +3,7 @@ import { UploadApiErrorResponse, UploadApiResponse, v2 as cloudinary } from 'clo
 export default defineEventHandler(async (event) => {
     const formData = await readFormData(event)
     const file = formData.get('image') as File
+    const object = formData.get('object') as string
 
     if (!file) {
         throw createError({
@@ -17,10 +18,7 @@ export default defineEventHandler(async (event) => {
 
     const uploadImage = (): Promise<UploadApiResponse> => {
         return new Promise((resolve, reject) => {
-            const uploadStream = cloudinary.uploader.upload_stream({
-                transformation: [{effect: 'background_removal', background_removal: 'remove_the_background'}],
-                folder: 'bg-removed'
-            }, (error: UploadApiErrorResponse | undefined, result: UploadApiResponse | undefined) => {
+            const uploadStream = cloudinary.uploader.upload_stream((error: UploadApiErrorResponse | undefined, result: UploadApiResponse | undefined) => {
                 if (error || !result) {
                     return reject(error || new Error('upload failed'))
                 }
@@ -32,5 +30,15 @@ export default defineEventHandler(async (event) => {
 
     const result = await uploadImage()
 
-    return result.secure_url
+    const transformatedImage = cloudinary.url(result.public_id, {
+        transformation: [
+            {
+                effect: `gen_remove:${object}`
+            }
+        ],
+        resource_type: 'image',
+        secure: true
+    })
+
+    return transformatedImage
 })

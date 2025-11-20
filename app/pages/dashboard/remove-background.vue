@@ -6,18 +6,18 @@
         description="Remove image backgrounds instantly and cleanly."
     />
     <div class="py-4 w-full max-w-full flex flex-col lg:flex-row gap-5">
-        <UCard class="w-full lg:w-2/5">
-            <UForm :schema="schema" :state="state" class="space-y-4 w-full" @submit="removeBackground">
-                <UFormField name="image" label="Image" description="JPG, GIF or PNG. 2MB Max.">
-                <UFileUpload v-model="state.image" accept="image/*" class="min-h-48" />
+        <UCard class="w-full lg:w-1/2 min-h-[460px]">
+            <UForm :schema="schema" :state="state" class="space-y-4 w-full flex-col flex" @submit="removeBackground">
+                <UFormField name="image" label="Image" class="flex-1" description="JPG, GIF or PNG. 2MB Max.">
+                <UFileUpload v-model="state.image" accept="image/*" class="min-h-96" />
                 </UFormField>
 
-                <UButton type="submit" label="Submit" color="neutral" />
+                <UButton type="submit" label="Submit" class="w-fit" color="neutral" />
             </UForm>
         </UCard>
-        <UCard :ui="{body: 'p-3 h-full'}" class="flex-1 w-full lg:w-3/5">
-            <div class="h-full" v-if="backImageUrl">
-                <NuxtImg :src="backImageUrl" />
+        <UCard :ui="{body: 'p-3 h-full'}" class="flex-1 w-full lg:w-1/2 min-h-[460px]">
+            <div v-if="backImageUrl">
+                <NuxtImg :src="backImageUrl" class="aspect-square object-contain"/>
             </div>
             <div v-else-if="isLoading && !backImageUrl" class="flex flex-col justify-center items-center">Removing image background...</div>
         </UCard>
@@ -98,11 +98,13 @@ const removeBackground = async (e: FormSubmitEvent<Schema>) => {
             return
         }
         isLoading.value = true
-
-        const data = await $fetch('/api/ai-tools', {
+        const formData = new FormData()
+        if (e.data.image instanceof File) {
+          formData.append('image', e.data.image)
+        }
+        const data = await $fetch('/api/cloudinary/remove-background', {
             method: 'POST',
-            body: {
-            }
+            body: formData
         })
 
         if (data) {

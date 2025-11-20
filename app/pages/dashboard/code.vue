@@ -23,7 +23,7 @@
             <UFormField class="flex-1 -mb-1.5" name="prompt">
                 <UTextarea v-model="state.prompt" :rows="1" class="w-full"></UTextarea>
             </UFormField>
-            <UButton type="submit" icon="lucide:arrow-up" color="neutral" :loading="isLoading"></UButton>
+            <UButton type="submit" icon="lucide:arrow-up" color="primary" :loading="isLoading"></UButton>
         </UForm>
     </div>
   </div>

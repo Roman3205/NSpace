@@ -11,8 +11,8 @@
                 <UButton size="sm" variant="soft" class="rounded-full" :icon="message.role == 'user' ? 'lucide:user' : 'lucide:bot'" :color="message.role == 'user' ? 'primary' : 'success'" />
                 <UCard :ui="{body: 'p-3'}">
                     <div class="text-sm max-w-prose">
-                        <MDC :value="message.content"></MDC>
-                         <!-- {{ message.content }} -->
+                        <!-- <MDC :value="message.content"></MDC> -->
+                         {{ message.content }}
                     </div>
                 </UCard>
             </div>
@@ -21,9 +21,9 @@
     <div class="py-4">
         <UForm @submit="sendPrompt" :state="state" :schema="schema" class="flex space-x-2 w-full">
             <UFormField class="flex-1 -mb-1.5" name="prompt">
-                <UTextarea v-model="state.prompt" :rows="1" class="w-full"></UTextarea>
+                <UTextarea v-model="state.prompt" :rows="2" :maxrows="2" :autoresize="true" size="xl" class="w-full"></UTextarea>
             </UFormField>
-            <UButton type="submit" icon="lucide:arrow-up" color="neutral" :loading="isLoading"></UButton>
+            <UButton type="submit" icon="lucide:arrow-up" color="primary" :loading="isLoading" class="h-16 w-16 flex justify-center" size="xl"></UButton>
         </UForm>
     </div>
   </div>

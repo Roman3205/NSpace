@@ -14,7 +14,7 @@
                 <UFormField name="length" label="Article length">
                     <USelect v-model="state.length" :items="articleItems" class="w-full" />
                 </UFormField>
-                <UButton type="submit" color="neutral">Submit</UButton>
+                <UButton type="submit" color="primary">Submit</UButton>
             </UForm>
         </UCard>
         <UCard :ui="{body: 'min-h-[calc(100dvh-350px)]'}" class="flex-1 mt-5 overflow-y-auto">
