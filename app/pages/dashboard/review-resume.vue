@@ -12,13 +12,12 @@
                     <UFileUpload v-model="state.resume" accept=".pdf" class="min-h-77" />
                 </UFormField>
 
-                <UButton type="submit" label="Submit" class="w-fit" color="neutral" />
+                <UButton type="submit" label="Submit" class="w-fit" color="primary" />
             </UForm>
         </UCard>
         <UCard :ui="{body: 'p-3 h-full'}" class="flex-1 w-full min-h-[460px]">
-            <div class="min-h-96 max-h-96" v-if="content">
-                {{ content }}
-                <!-- <MDC :value="content" /> -->
+            <div class="min-h-96 overflow-y-auto" v-if="content">
+                <MDC :value="content" />
             </div>
             <div v-else-if="isLoading && !content" class="flex flex-col justify-center items-center">Reviewing the resume...</div>
         </UCard>
@@ -31,8 +30,6 @@ import * as z from 'zod';
 import type {FormSubmitEvent} from '@nuxt/ui';
 
 const MAX_FILE_SIZE = 5*1024*1024;
-const MIN_DIMENSIONS = {width: 200, height: 200}
-const MAX_DIMENSIONS = {width: 4096, height: 4096}
 const ACCEPTED_IMAGE_TYPES = ['application/pdf']
 
 const formatBytes = (bytes: number, decimals = 2) => {
@@ -94,6 +91,7 @@ const reviewResume = async (e: FormSubmitEvent<Schema>) => {
 
         if (data) {
             content.value = data
+            await refreshNuxtData('userCount')
         }
 
     } catch (error) {

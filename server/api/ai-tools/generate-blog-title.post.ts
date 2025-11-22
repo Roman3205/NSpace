@@ -1,4 +1,5 @@
 import { openai } from "~~/server/utils/openai"
+import { incrementApiLimit } from "~~/server/services/user-api-limit"
 
 export default defineEventHandler(async (event) => {
     const {keyword, category} = await readBody(event)
@@ -17,6 +18,8 @@ export default defineEventHandler(async (event) => {
         messages: [{role: 'user', content: prompt}],
         temperature: 0.5,
     })
+
+    await incrementApiLimit(event.context.user.id)
 
     return response.choices[0].message.content
 })

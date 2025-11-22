@@ -12,7 +12,7 @@
                 <UFileUpload v-model="state.image" accept="image/*" class="min-h-96" />
                 </UFormField>
 
-                <UButton type="submit" label="Submit" class="w-fit" color="neutral" />
+                <UButton type="submit" label="Submit" class="w-fit" color="primary" />
             </UForm>
         </UCard>
         <UCard :ui="{body: 'p-3 h-full'}" class="flex-1 w-full lg:w-1/2 min-h-[460px]">
@@ -109,6 +109,7 @@ const removeBackground = async (e: FormSubmitEvent<Schema>) => {
 
         if (data) {
             backImageUrl.value = data
+            await refreshNuxtData('userCount')
         }
 
     } catch (error) {

@@ -9,6 +9,7 @@
                     <UNavigationMenu :ui="{label: 'py-2', link: 'py-3'}" :items="sidebarMenu" orientation="vertical" class="data-[orientation-vertical]:w-full" />
                 </div>
             </div>
+            <UserCounter />
         </div>
     </aside>
 </template>

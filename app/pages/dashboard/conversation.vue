@@ -9,10 +9,9 @@
         <div class="flex flex-col gap-y-4">
             <div v-for="(message,index) in messages" :key="index" :class="[message.role == 'user' ? 'justify-end' : 'justify-start']" class="flex items-start space-x-2">
                 <UButton size="sm" variant="soft" class="rounded-full" :icon="message.role == 'user' ? 'lucide:user' : 'lucide:bot'" :color="message.role == 'user' ? 'primary' : 'success'" />
-                <UCard :ui="{body: 'p-3'}">
+                <UCard>
                     <div class="text-sm max-w-prose">
-                        <!-- <MDC :value="message.content"></MDC> -->
-                         {{ message.content }}
+                        <MDC :value="message.content"></MDC>
                     </div>
                 </UCard>
             </div>
@@ -21,9 +20,9 @@
     <div class="py-4">
         <UForm @submit="sendPrompt" :state="state" :schema="schema" class="flex space-x-2 w-full">
             <UFormField class="flex-1 -mb-1.5" name="prompt">
-                <UTextarea v-model="state.prompt" :rows="2" :maxrows="2" :autoresize="true" size="xl" class="w-full"></UTextarea>
+                <UTextarea v-model="state.prompt" :rows="1" :maxrows="1" :autoresize="true" size="xl" class="w-full"></UTextarea>
             </UFormField>
-            <UButton type="submit" icon="lucide:arrow-up" color="primary" :loading="isLoading" class="h-16 w-16 flex justify-center" size="xl"></UButton>
+            <UButton type="submit" icon="lucide:arrow-up" color="primary" :loading="isLoading" class="h-10 w-10 flex justify-center" size="xl"></UButton>
         </UForm>
     </div>
   </div>
@@ -82,9 +81,9 @@ const sendPrompt = async (e: FormSubmitEvent<Schema>) => {
                 role: 'system',
                 content: data
             })
+            state.prompt = ''
         }
 
-        state.prompt = ''
     } catch (error) {
         toast.add({title: 'Error', description: error.message, color: 'error'})
     } finally {

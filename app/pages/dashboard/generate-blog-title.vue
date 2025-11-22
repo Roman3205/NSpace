@@ -14,12 +14,12 @@
                 <UFormField name="length" label="Blog category">
                     <USelect v-model="state.category" :items="categoryItems" class="w-full" />
                 </UFormField>
-                <UButton type="submit" color="neutral">Submit</UButton>
+                <UButton type="submit" color="primary">Submit</UButton>
             </UForm>
         </UCard>
         <UCard :ui="{body: 'min-h-[calc(100dvh-350px)]'}" class="flex-1 mt-5 overflow-y-auto">
             <div class="h-full" v-if="content">
-                {{ content }}
+                <MDC :value="content" />
             </div>
             <div v-else-if="isLoading && !content" class="flex flex-col justify-center items-center">Generating blog titles...</div>
         </UCard>
@@ -74,6 +74,7 @@ const generateBlogTitle = async (e: FormSubmitEvent<Schema>) => {
             content.value = data
             state.keyword = ''
             state.category = 'General'
+            await refreshNuxtData('userCount')
         }
 
     } catch (error) {
