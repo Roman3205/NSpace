@@ -12,11 +12,13 @@ export default defineEventHandler(async (event) => {
     }
 
     const response = await openai.chat.completions.create({
-        model: "gemini-2.5-flash",
+        model: "gpt-3.5-turbo",
         messages: [{role: "system", content: "You are a helpful assistant."}, ...messages],
         temperature: 0.5,
         // max_completion_tokens: 500
     })
+
+    await incrementApiLimit(event.context.user.id)
 
     return response.choices[0].message.content
 })

@@ -6,7 +6,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/ui',
     '@nuxt/fonts',
-    '@nuxtjs/mdc'
+    '@nuxtjs/mdc',
   ],
   css: ['@/assets/css/main.css'],
   app: {
@@ -23,7 +23,7 @@ export default defineNuxtConfig({
     googleClientId: '',
     googleClientSecret: '',
     githubClientId: '',
-    geminiApi: '',
+    openaiApi: '',
     githubClientSecret: '',
     cloudinaryCloudName: '',
     cloudinaryApiSecret: '',
