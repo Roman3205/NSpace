@@ -10,8 +10,8 @@ const polarClient = () => {
 }
 
 export const setupPolar = () => polar({
-    client: polarClient,
-    createCustomerOnSignUp: true,
+    client: polarClient(),
+    createCustomerOnSignUp: false, // should be true
     use: [
         checkout({
             products: [
@@ -38,4 +38,11 @@ export const getPolarCustomerState = async (userId: string) => {
     })
 
     return customerState
+}
+
+export const getCustomerPolarUrl = async (userId: string) => {
+    const polar = polarClient()
+    const customerSession = await polar.customerSessions.create({externalCustomerId: userId})
+
+    return customerSession.customerPortalUrl
 }
