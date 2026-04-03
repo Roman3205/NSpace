@@ -1,5 +1,6 @@
 import { openai } from "~~/server/utils/openai"
 import { incrementApiLimit } from "~~/server/services/user-api-limit"
+import { validateUserStatus } from "~~/server/utils/user-status"
 
 export default defineEventHandler(async (event) => {
     const {topic, length} = await readBody(event)
@@ -11,6 +12,8 @@ export default defineEventHandler(async (event) => {
         })
     }
 
+    const userStatus = await validateUserStatus(event.context.user.id)
+
     const prompt = `Write an article about ${topic} in ${length ? length : 500}`
 
     const response = await openai.chat.completions.create({
@@ -20,7 +23,8 @@ export default defineEventHandler(async (event) => {
         // max_completion_tokens: 500
     })
 
-    await incrementApiLimit(event.context.user.id)
-
+    if (!userStatus.isPro) {
+        await incrementApiLimit(event.context.user.id)
+    }
     return response.choices[0].message.content
 })

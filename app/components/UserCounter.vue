@@ -22,6 +22,8 @@ const progress = computed(() => {
     if (userData.value) {
         return (userData.value.userApiLimitCount / MAX_API_COUNT) * 100
     }
+
+    return 0
 })
 
 const isPro = computed(() => userData.value?.subscription)

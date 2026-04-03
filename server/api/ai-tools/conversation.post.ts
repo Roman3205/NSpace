@@ -1,5 +1,6 @@
 import { openai } from "~~/server/utils/openai"
 import { incrementApiLimit } from "~~/server/services/user-api-limit"
+import { validateUserStatus } from "~~/server/utils/user-status"
 
 export default defineEventHandler(async (event) => {
     const {messages} = await readBody(event)
@@ -11,6 +12,9 @@ export default defineEventHandler(async (event) => {
         })
     }
 
+    const userStatus = await validateUserStatus(event.context.user.id)
+
+
     const response = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",
         messages: [{role: "system", content: "You are a helpful assistant."}, ...messages],
@@ -18,7 +22,8 @@ export default defineEventHandler(async (event) => {
         // max_completion_tokens: 500
     })
 
-    await incrementApiLimit(event.context.user.id)
-
+    if (!userStatus.isPro) {
+        await incrementApiLimit(event.context.user.id)
+    }
     return response.choices[0].message.content
 })

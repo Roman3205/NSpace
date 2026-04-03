@@ -1,6 +1,7 @@
 import { openai } from "~~/server/utils/openai"
 import {getDocumentProxy, extractText} from 'unpdf'
 import { incrementApiLimit } from "~~/server/services/user-api-limit"
+import { validateUserStatus } from "~~/server/utils/user-status"
 
 export default defineEventHandler(async (event) => {
     const formData = await readFormData(event)
@@ -12,6 +13,8 @@ export default defineEventHandler(async (event) => {
             statusMessage: 'Data not provided'
         })
     }
+
+    const userStatus = await validateUserStatus(event.context.user.id)
 
     const buffer = Buffer.from(await file.arrayBuffer())
     const pdf = await getDocumentProxy(new Uint8Array(buffer))
@@ -27,7 +30,8 @@ export default defineEventHandler(async (event) => {
         // max_completion_tokens: 500
     })
 
-    await incrementApiLimit(event.context.user.id)
-
+    if (!userStatus.isPro) {
+        await incrementApiLimit(event.context.user.id)
+    }
     return response.choices[0].message.content
 })

@@ -1,5 +1,6 @@
 import { openai } from "~~/server/utils/openai"
 import { incrementApiLimit } from "~~/server/services/user-api-limit"
+import { validateUserStatus } from "~~/server/utils/user-status"
 
 export default defineEventHandler(async (event) => {
     const {keyword, category} = await readBody(event)
@@ -11,6 +12,8 @@ export default defineEventHandler(async (event) => {
         })
     }
 
+    const userStatus = await validateUserStatus(event.context.user.id)
+
     const prompt = `Generate a blog title for the keyword ${keyword} in the category ${category}`
 
     const response = await openai.chat.completions.create({
@@ -19,7 +22,8 @@ export default defineEventHandler(async (event) => {
         temperature: 0.5,
     })
 
-    await incrementApiLimit(event.context.user.id)
-
+    if (!userStatus.isPro) {
+        await incrementApiLimit(event.context.user.id)
+    }
     return response.choices[0].message.content
 })

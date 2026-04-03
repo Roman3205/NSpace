@@ -31,7 +31,7 @@ const {signOut} = useAuth()
 
 const items = ref<DropdownMenuItem[]>([
     {label: 'Profile', icon: 'lucide:user'},
-    {label: 'Billing', icon: 'lucide:credit-card'},
+    {label: 'Billing', icon: 'lucide:credit-card', to: '/dashboard/settings'},
     {label: 'Logout', icon: 'lucide:log-out', onSelect: async () => {
         await signOut({redirectTo: '/auth/login'})
     }},

@@ -4,6 +4,7 @@
     <NuxtRouteAnnouncer />
     <NuxtLayout>
        <NuxtPage />
+        <TheProModal />
     </NuxtLayout>
   </UApp>
 </template>
