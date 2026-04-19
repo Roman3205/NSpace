@@ -17,7 +17,8 @@ import type { customerData } from '~~/types/user';
 
 const {upgradeUserToPro} = useAuth()
 const {data: userData, status} = await useFetch<customerData>('/api/user', {
-    key: 'userData'
+    key: 'userData',
+    dedupe: 'defer'
 })
 
 const progress = computed(() => {

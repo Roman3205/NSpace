@@ -12,8 +12,7 @@ export default defineEventHandler(async (event) => {
         })
     }
 
-    // const userStatus = await validateUserStatus(event.context.user.id)
-
+    const userStatus = await validateUserStatus(event.context.user.id)
 
     const response = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",
@@ -22,8 +21,8 @@ export default defineEventHandler(async (event) => {
         // max_completion_tokens: 500
     })
 
-    // if (!userStatus.isPro) {
+    if (!userStatus.isPro) {
         await incrementApiLimit(event.context.user.id)
-    // }
+    }
     return response.choices[0].message.content
 })

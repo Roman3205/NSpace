@@ -46,7 +46,8 @@ const items = ref<DropdownMenuItem[]>([
 ])
 
 const {data: userData} = await useFetch<customerData>('/api/user', {
-    key: 'userData'
+    key: 'userData',
+    dedupe: 'defer'
 })
 </script>
 

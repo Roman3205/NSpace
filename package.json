@@ -13,7 +13,7 @@
   "dependencies": {
     "@nuxt/fonts": "^0.11.4",
     "@nuxt/image": "^1.11.0",
-    "@nuxt/ui": "^4.1.0",
+    "@nuxt/ui": "^4.6.1",
     "@nuxtjs/mdc": "^0.18.4",
     "@polar-sh/better-auth": "^1.5.0",
     "@polar-sh/sdk": "^0.41.5",
