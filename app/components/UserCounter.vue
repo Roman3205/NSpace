@@ -13,11 +13,13 @@
 
 <script lang="ts" setup>
 import { MAX_API_COUNT } from '~~/constants/max-api-limit';
+import type { customerData } from '~~/types/user';
 
 const {upgradeUserToPro} = useAuth()
-const {data: userData, status} = await useFetch<{userApiLimitCount: number, subscription: string}>('/api/user', {
-    key: 'userCount'
+const {data: userData, status} = await useFetch<customerData>('/api/user', {
+    key: 'userData'
 })
+
 const progress = computed(() => {
     if (userData.value) {
         return (userData.value.userApiLimitCount / MAX_API_COUNT) * 100

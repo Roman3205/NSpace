@@ -28,6 +28,7 @@
 <script lang="ts" setup>
 import * as z from 'zod';
 import type {FormSubmitEvent} from '@nuxt/ui';
+import {FetchError} from 'ofetch';
 
 const MAX_FILE_SIZE = 2*1024*1024;
 const MIN_DIMENSIONS = {width: 200, height: 200}
@@ -109,11 +110,14 @@ const removeBackground = async (e: FormSubmitEvent<Schema>) => {
 
         if (data) {
             backImageUrl.value = data
-            await refreshNuxtData('userCount')
+            await refreshNuxtData('userData')
         }
 
     } catch (error) {
-        toast.add({title: 'Error', description: error.message, color: 'error'})
+      const fetchError = error as FetchError
+      toast.add({title: 'Error', description: fetchError.message, color: 'error'})
+      
+      errorActions(fetchError)
     } finally {
         isLoading.value = false
     }

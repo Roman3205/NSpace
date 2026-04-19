@@ -1,5 +1,5 @@
 const createSharedComposable = () => {
-    const isOpen = ref(true)
+    const isOpen = ref(false)
 
     const toggleModalState = (modalState: boolean) => {
         isOpen.value = modalState

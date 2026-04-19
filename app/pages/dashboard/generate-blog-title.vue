@@ -30,6 +30,7 @@
 <script lang="ts" setup>
 import * as z from 'zod';
 import type {FormSubmitEvent} from '@nuxt/ui';
+import {FetchError} from 'ofetch';
 
 const schema = z.object({
     keyword: z.string('Invalid keyword').min(3, 'Invalid keyword'),
@@ -74,11 +75,14 @@ const generateBlogTitle = async (e: FormSubmitEvent<Schema>) => {
             content.value = data
             state.keyword = ''
             state.category = 'General'
-            await refreshNuxtData('userCount')
+            await refreshNuxtData('userData')
         }
 
     } catch (error) {
-        toast.add({title: 'Error', description: error.message, color: 'error'})
+        const fetchError = error as FetchError
+        toast.add({title: 'Error', description: fetchError.message, color: 'error'})
+
+        errorActions(fetchError)
     } finally {
         isLoading.value = false
     }

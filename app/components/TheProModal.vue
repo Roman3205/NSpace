@@ -17,6 +17,7 @@
                     </UCard>
                 </NuxtLink>
             </div>
+            <UButton @click="upgradeUserToPro" icon="lucide:sparkle" color="info" class="w-full justify-center mt-5">Upgrade</UButton>
         </div>
     </template>
   </UModal>
@@ -25,7 +26,7 @@
 <script setup lang="ts">
 import { aiTools } from '~~/constants/tools';
 
-const {isOpen, toggleModalState} = useProModal()
+const {isOpen} = useProModal()
 const {upgradeUserToPro} = useAuth()
 
 </script>

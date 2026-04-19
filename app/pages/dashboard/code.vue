@@ -31,6 +31,7 @@
 <script lang="ts" setup>
 import * as z from 'zod';
 import type {FormSubmitEvent} from '@nuxt/ui';
+import {FetchError} from 'ofetch';
 
 const schema = z.object({
     prompt: z.string('Invalid prompt').min(1, 'Invalid prompt')
@@ -83,10 +84,13 @@ const sendPrompt = async (e: FormSubmitEvent<Schema>) => {
                 content: data
             })
             state.prompt = ''
-            await refreshNuxtData('userCount')
+            await refreshNuxtData('userData')
         }
     } catch (error) {
-        toast.add({title: 'Error', description: error.message, color: 'error'})
+        const fetchError = error as FetchError
+        toast.add({title: 'Error', description: fetchError.message, color: 'error'})
+
+        errorActions(fetchError)
     } finally {
         isLoading.value = false
     }

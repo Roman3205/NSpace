@@ -9,6 +9,6 @@ export default defineEventHandler(async (event) => {
     return {
         userApiLimitCount,
         subscription,
-        customerPortalUrl
+        customerPortalUrl,
     }
 })

@@ -12,49 +12,49 @@ export const sidebarMenu: NavigationMenuItem[][] = [[
 export const aiTools = [
     {
         title: 'Conversation',
-        description: '',
+        description: 'Engage in natural language conversations with our AI assistant.',
         path: '/dashboard/conversation',
         icon: 'lucide:message-square',
         btnText: 'Start Conversation'
     },
     {
         title: 'Code Generation',
-        description: '',
+        description: 'Generate code using description text.',
         path: '/dashboard/code',
         icon: 'lucide:code',
         btnText: 'Generate Code'
     },
     {
         title: 'AI Article Writer',
-        description: '',
+        description: 'Craft well-structured and engaging articles on any subject.',
         path: '/dashboard/write-article',
         icon: 'lucide:square-pen',
         btnText: 'Generate Article'
     },
     {
         title: 'Blog Title Generator',
-        description: '',
+        description: 'Generate catchy blog titles to boost your content marketing.',
         path: '/dashboard/generate-blog-title',
         icon: 'lucide:hash',
         btnText: 'Generate Blog Title'
     },
     {
         title: 'Background Removal',
-        description: '',
+        description: 'Remove backgrounds from your images with ease.',
         path: '/dashboard/remove-background',
         icon: 'lucide:eraser',
         btnText: 'Remove Background'
     },
     {
         title: 'Object Removal',
-        description: '',
+        description: 'Remove objects from your images with ease.',
         path: '/dashboard/remove-object',
         icon: 'lucide:scissors',
         btnText: 'Remove Object'
     },
     {
         title: 'Resume Reviewer',
-        description: '',
+        description: 'Get feedback on your resume from our AI assistant.',
         path: '/dashboard/review-resume',
         icon: 'lucide:file-check',
         btnText: 'Review Resume'

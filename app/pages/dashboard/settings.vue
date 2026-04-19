@@ -18,15 +18,15 @@
 </template>
 
 <script lang="ts" setup>
-import type { CustomerStateSubscription } from '@polar-sh/sdk/models/components/customerstatesubscription.js'
+import type { customerData } from '~~/types/user';
 
 definePageMeta({
     layout: 'dashboard'
 })
 
 const {upgradeUserToPro} = useAuth()
-const {data: userData, status} = await useFetch<{userApiLimitCount: number, customerPortalUrl: string, subscription: CustomerStateSubscription}>('/api/user', {
-    key: 'userCount'
+const {data: userData, status} = await useFetch<customerData>('/api/user', {
+    key: 'userData'
 })
 
 const isPro = computed(() => userData.value?.subscription)

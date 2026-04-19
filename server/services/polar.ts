@@ -11,7 +11,7 @@ const polarClient = () => {
 
 export const setupPolar = () => polar({
     client: polarClient(),
-    createCustomerOnSignUp: false, // should be true
+    createCustomerOnSignUp: false, // should be true when polar connected
     use: [
         checkout({
             products: [

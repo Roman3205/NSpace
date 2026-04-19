@@ -28,6 +28,7 @@
 <script lang="ts" setup>
 import * as z from 'zod';
 import type {FormSubmitEvent} from '@nuxt/ui';
+import {FetchError} from 'ofetch';
 
 const MAX_FILE_SIZE = 5*1024*1024;
 const ACCEPTED_IMAGE_TYPES = ['application/pdf']
@@ -91,11 +92,14 @@ const reviewResume = async (e: FormSubmitEvent<Schema>) => {
 
         if (data) {
             content.value = data
-            await refreshNuxtData('userCount')
+            await refreshNuxtData('userData')
         }
 
     } catch (error) {
-        toast.add({title: 'Error', description: error.message, color: 'error'})
+        const fetchError = error as FetchError
+        toast.add({title: 'Error', description: fetchError.message, color: 'error'})
+
+        errorActions(fetchError)
     } finally {
         isLoading.value = false
     }

@@ -32,5 +32,5 @@ export const getUserApiLimit = async (userId: string) => {
         return 0
     }
 
-    return userApiLimit
+    return userApiLimit.count
 }
